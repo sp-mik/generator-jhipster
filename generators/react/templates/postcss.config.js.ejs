@@ -16,6 +16,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -%>
+const tailwindcss = require('tailwindcss');
 module.exports = {
-  plugins: [require('autoprefixer')],
+	plugins: {
+    'postcss-preset-env' : {},
+	'autoprefixer': {},
+	'@tailwindcss/postcss': {}
+	},
 };

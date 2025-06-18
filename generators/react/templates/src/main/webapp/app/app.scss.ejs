@@ -16,6 +16,27 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -%>
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "tailwindcss";
+
+/* Path to scalepoint-theme.css from design system package */
+@import "@scalepoint/design-system-react/dist/theme/scalepoint-theme.css";
+
+/* Path to flowbite package in node_modules  */
+@source "flowbite";
+
+/* Path to design system package in node_modules */
+@source "../../node_modules/@scalepoint/design-system-react";
+
+@plugin "flowbite/plugin";
+
+/* (Optional) By default tailwindcss v4 uses system settings to decide if dark mode should be enabled, if you want to control it with css class add following code: */
+@custom-variant dark (&:where(.dark, .dark *));
+
 // Override Bootstrap variables
 @import 'bootstrap-variables';
 <%_ if (!clientThemeNone) { _%>

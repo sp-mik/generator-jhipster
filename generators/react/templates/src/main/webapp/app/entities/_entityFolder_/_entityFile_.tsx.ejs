@@ -21,8 +21,10 @@ import React, { useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 <%_ } _%>
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Button, Table, TableBody, TableRow, TableHeader, TableHead } from '@scalepoint/design-system-react';
-import { <% if (searchEngineAny) { %>Input, InputGroup, FormGroup, Form, Row, Col, <% } %>Table } from 'reactstrap';
+import { Button, Table } from '@scalepoint/design-system-react';
+<% if (searchEngineAny) { %>
+import { Input, InputGroup, FormGroup, Form, Row, Col } from 'reactstrap';
+<% } %>
 import {
 <%_ if (anyFieldIsBlobDerived) { _%>
   <%_ if (anyFieldHasFileBasedContentType) { _%>
@@ -371,34 +373,34 @@ export const <%= entityReactName %> = () => {
         {
           <%= entityInstance %>List && <%= entityInstance %>List.length > 0 ?(
             <Table className="w-full table-auto">
-              <TableHeader>
-                <TableRow>
+              <Table.Header>
+                <Table.Row>
 <%_ for (field of fields) { _%>
-                  <TableHead className="max-w-[200px] overflow-hidden text-ellipsis text-nowrap" onClick={sort('<%= field.fieldName %>')} ><Translate contentKey="<%= `${i18nKeyPrefix}.${field.fieldName}` %>"><%= field.fieldNameHumanized %></Translate> <FontAwesomeIcon icon={getSortIconByFieldName('<%= field.fieldName %>')} /></TableHead>
+                  <Table.Head className="max-w-[200px] overflow-hidden text-ellipsis text-nowrap" onClick={sort('<%= field.fieldName %>')} ><Translate contentKey="<%= `${i18nKeyPrefix}.${field.fieldName}` %>"><%= field.fieldNameHumanized %></Translate> <FontAwesomeIcon icon={getSortIconByFieldName('<%= field.fieldName %>')} /></Table.Head>
 <%_ } _%>
 <%_ for (relationship of relationships) { _%>
     <%_ if (relationship.persistableRelationship && (paginationNo || !relationship.collection)) { _%>
-                  <TableHead className="max-w-[200px] overflow-hidden text-ellipsis text-nowrap"><Translate contentKey="<%= `${i18nKeyPrefix}.${relationship.relationshipName}` %>"><%= relationship.relationshipNameHumanized %></Translate> <FontAwesomeIcon icon="sort" /></TableHead>
+                  <Table.Head className="max-w-[200px] overflow-hidden text-ellipsis text-nowrap"><Translate contentKey="<%= `${i18nKeyPrefix}.${relationship.relationshipName}` %>"><%= relationship.relationshipNameHumanized %></Translate> <FontAwesomeIcon icon="sort" /></Table.Head>
     <%_ } _%>
 <%_ } _%>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
                 {
                   <%= entityInstance %>List.map((<%= entityInstance %>, i) => (
-                  <TableRow key={`entity-${i}`} data-cy="entityTable">
-                    <TableHead className="max-w-[200px] overflow-hidden text-ellipsis text-nowrap">
-                      <Button tag={Link} to={`/<%= entityPage %>/${<%= entityInstance %>.<%= primaryKey.name %>}`} color="link" size="sm">
+                  <Table.Row key={`entity-${i}`} data-cy="entityTable">
+                    <Table.Head className="max-w-[200px] overflow-hidden text-ellipsis text-nowrap">
+                      <Button color="link" size="sm">
                         {<%= entityInstance %>.<%= primaryKey.name %>}
                       </Button>
-                    </TableHead>
+                    </Table.Head>
 <%_ for (field of fields) {
   const fieldType = field.fieldType;
   const fieldName = field.fieldName;
   const fieldIsEnum = field.fieldIsEnum;
 _%>
   <%_ if (fieldName !== primaryKey.name) { _%>
-                    <TableHead className="max-w-[200px] overflow-hidden text-ellipsis text-nowrap">
+                    <Table.Head className="max-w-[200px] overflow-hidden text-ellipsis text-nowrap">
     <%_ if (field.fieldTypeBoolean) { _%>
                       {<%= entityInstance %>.<%= field.fieldName %> ? 'true' : 'false'}
     <%_ } else if (field.fieldTypeTimed) { _%>
@@ -435,7 +437,7 @@ _%>
     <%_ } else { _%>
                       {<%= entityInstance %>.<%= fieldName %>}
     <%_ } _%>
-                    </TableHead>
+                    </Table.Head>
   <%_ } _%>
 <%_ } _%>
 <%_ for (relationship of relationships) {
@@ -445,7 +447,7 @@ _%>
   const otherEntityPkName = relationship.otherEntity.primaryKey && relationship.otherEntity.primaryKey.name || 'id';
   const otherEntityField = relationship.otherEntityField; _%>
   <%_ if (relationship.persistableRelationship && (paginationNo || !relationship.collection)) { _%>
-                    <TableHead className="max-w-[200px] overflow-hidden text-ellipsis text-nowrap py-1.5">
+                    <Table.Head className="max-w-[200px] overflow-hidden text-ellipsis text-nowrap py-1.5">
     <%_ if (relationship.otherEntityUser) { _%>
       <%_ if (relationship.relationshipManyToMany) { _%>
                       {
@@ -474,28 +476,28 @@ _%>
                         </Link> : ''}
       <%_ } _%>
     <%_ } _%>
-                      </TableHead>
+                      </Table.Head>
   <%_ } _%>
 <%_ } _%>
-                      <TableHead className="max-w-[200px] overflow-hidden text-ellipsis text-nowrap py-1.5">
+                      <Table.Head className="max-w-[200px] overflow-hidden text-ellipsis text-nowrap py-1.5">
                         <div className="btn-group flex-btn-group-container">
-                          <Button tag={Link} to={`/<%= entityPage %>/${<%= entityInstance %>.<%= primaryKey.name %>}`} color="info" size="sm" data-cy="entityDetailsButton">
+                          <Button color="info" size="sm" data-cy="entityDetailsButton">
                             <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline" ><Translate contentKey="entity.action.view">View</Translate></span>
                           </Button>
 <%_ if (!readOnly) { _%>
-                          <Button tag={Link} to={`/<%= entityPage %>/${<%= entityInstance %>.<%= primaryKey.name %>}/edit<%_ if (paginationPagination) { _%>?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}<%_ } _%>`} color="primary" size="sm" data-cy="entityEditButton">
+                          <Button to={`/<%= entityPage %>/${<%= entityInstance %>.<%= primaryKey.name %>}/edit<%_ if (paginationPagination) { _%>?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}<%_ } _%>`} color="primary" size="sm" data-cy="entityEditButton">
                             <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline"><Translate contentKey="entity.action.edit">Edit</Translate></span>
                           </Button>
-                          <Button onClick={() => <% if (entityInstance !== 'window' ) { %>window.<% } %>location.href=`/<%= entityPage %>/${<%= entityInstance %>.<%= primaryKey.name %>}/delete<%_ if (paginationPagination) { _%>?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}<%_ } _%>`} color="danger" size="sm" data-cy="entityDeleteButton">
+                          <Button color="danger" size="sm" data-cy="entityDeleteButton">
                             <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline"><Translate contentKey="entity.action.delete">Delete</Translate></span>
                           </Button>
 <%_ } _%>
                         </div>
-                      </TableHead>
-                    </TableRow>
+                      </Table.Head>
+                    </Table.Row>
                   ))
                 }
-              </TableBody>
+              </Table.Body>
             </Table>
           ) : (
               !loading && <div className="alert alert-warning">
